@@ -1,15 +1,19 @@
 import os
+import random
+from termcolor import colored
+import shutil
+from pathlib import Path
+from typing import List, Tuple
 
-REMAINIG_LINKS_PATH = "remaining_leet.txt"
-ALL_LEET_LINKS_PATH = "leet_links.txt"
+REMAINIG_LINKS_PATH = Path("remaining_leet.txt")
+ALL_LEET_LINKS_PATH = Path("leet_links.txt")
 
-def link_extract(driver_path="C:\Program Files (x86)\chromedriver.exe"):
+def link_extract(driver_path: Path="C:\Program Files (x86)\chromedriver.exe") -> None:
     '''
     gets all leet questions links and their difficulty level and saves it to a file
     '''
     from bs4 import BeautifulSoup
     from selenium import webdriver
-
     neet_code_url = "https://neetcode.io/practice"
     
     driver = webdriver.Chrome(driver_path)
@@ -33,8 +37,8 @@ def link_extract(driver_path="C:\Program Files (x86)\chromedriver.exe"):
     with open(ALL_LEET_LINKS_PATH, "w+") as f:
         f.writelines("\n".join(all_links))
 
-import random
-def get_link():
+
+def _get_link() -> Tuple[str, List[str]]:
     with open(REMAINIG_LINKS_PATH,"r+") as f:
         all_links = f.readlines()
     
@@ -45,25 +49,27 @@ def get_link():
         with open(REMAINIG_LINKS_PATH) as f:
             all_links = f.readlines()
 
-def link_generator():
+def link_generator() -> None:
     ''' 
     randomly extracts a single link from the remaining links file. if the question is excepted, link is removed.
     '''
-    from termcolor import colored
-    import shutil
     if not os.path.exists(REMAINIG_LINKS_PATH):
         if not os.path.exists(ALL_LEET_LINKS_PATH):
             link_extract()
         shutil.copy(ALL_LEET_LINKS_PATH, REMAINIG_LINKS_PATH)
 
-    for link, remainig_links in get_link():
-        input("Press to get new link")
+    for link, remainig_links in _get_link():
+        input("Press to get new link\n")
         print(colored(f"{link}","green"))
-        is_excepted = input("is leet link excepted? Y/N")
+        is_excepted = input("is leet link excepted? Y/N \n Q-for exit\n")
+        while is_excepted not in ["N","n","Y","y","q","Q"]:
+            print(colored("Invalid Choice", "red"))
+            is_excepted = input("is leet link excepted? Y/N \n Q-for exit\n")
         if is_excepted in "Nn":
             remainig_links.append(link)
-        elif is_excepted not in "yY":
+        elif is_excepted in "Qq":
             exit()
+
         with open(REMAINIG_LINKS_PATH, "w") as f:
                 f.writelines("".join(remainig_links))
 
