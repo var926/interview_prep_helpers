@@ -79,7 +79,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Actions for leet extractor')
     group = parser.add_mutually_exclusive_group()
     parser.add_argument('-c', "--collect", action="store_true", help='Download links from neetcode.com')
-    group.add_argument('-i', "--indicate_web_driver", type=str, default="C:\Program Files (x86)\chromedriver.exe", help='path for sutible web driver')
+    group.add_argument('-i', "--indicate_web_driver", type=str, default=Path("C:\Program Files (x86)\chromedriver.exe"), help='path for sutible web driver')
     group.add_argument('-g', "--generate",  action="store_true", help='start the link generator')
     args = parser.parse_args()
 
