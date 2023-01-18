@@ -33,9 +33,6 @@ def link_extract(driver_path="C:\Program Files (x86)\chromedriver.exe"):
     with open(ALL_LEET_LINKS_PATH, "w+") as f:
         f.writelines("\n".join(all_links))
 
-
-
-    
 import random
 def get_link():
     with open(REMAINIG_LINKS_PATH,"r+") as f:
